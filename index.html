@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automação WhatsApp - Projeto Completo</title>
+    <title>Por Que 87% dos Nossos Concorrentes Falham Onde Nós Entregamos Resultados</title>
     <style>
         * {
             margin: 0;
@@ -12,743 +12,1015 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: #000;
+            color: #fff;
             overflow-x: hidden;
-        }
-
-        .presentation-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            line-height: 1.5;
         }
 
         .slide {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-            padding: 60px;
-            min-height: 600px;
+            display: none;
+            min-height: 100vh;
+            padding: 60px 40px;
+            position: relative;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .slide.active {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Header fixo */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 40px;
+            z-index: 1000;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .slide-counter {
+            font-size: 1rem;
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Typography */
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #00d4ff;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            line-height: 1.1;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            color: #00ff88;
+            font-weight: 500;
+        }
+
+        .highlight {
+            color: #00d4ff;
+            font-weight: 700;
+        }
+
+        .danger {
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+
+        .success {
+            color: #00ff88;
+            font-weight: 700;
+        }
+
+        /* Cards e Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            margin: 50px 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease;
         }
 
-        .slide:hover {
-            transform: translateY(-5px);
-        }
-
-        .slide::before {
+        .card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #25D366, #128C7E, #075E54);
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
         }
 
-        .slide-header {
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3);
+            border-color: #00ff88;
+        }
+
+        .danger-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 0, 0, 0.05));
+            border: 2px solid rgba(255, 107, 107, 0.4);
+        }
+
+        .danger-card::before {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        }
+
+        .success-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.05));
+            border: 2px solid rgba(0, 255, 136, 0.4);
+        }
+
+        .success-card::before {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+        }
+
+        /* Elementos especiais */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 50px 0;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .stat {
             text-align: center;
-            margin-bottom: 40px;
         }
 
-        .slide-number {
-            display: inline-block;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .slide-title {
-            font-size: 2.5em;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .slide-subtitle {
-            font-size: 1.2em;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-            flex-grow: 1;
-        }
-
-        .content-single {
-            flex-grow: 1;
-        }
-
-        .tech-card {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 30px;
-            border-radius: 15px;
-            border-left: 5px solid #25D366;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .tech-card:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
-        }
-
-        .tech-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #00d4ff;
             display: block;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
         }
 
-        .tech-title {
-            font-size: 1.4em;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-weight: bold;
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 10px;
+            color: #fff;
         }
 
-        .tech-description {
-            color: #5a6c7d;
-            line-height: 1.6;
-        }
-
-        .code-block {
-            background: #2d3748;
-            color: #e2e8f0;
-            padding: 25px;
+        .quote {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #00d4ff;
+            padding: 30px;
+            margin: 30px 0;
             border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            overflow-x: auto;
-            border-left: 4px solid #25D366;
+            font-style: italic;
+            font-size: 1.2rem;
+            text-align: center;
+            color: #fff;
         }
 
-        .feature-list {
+        .cta-button {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            color: #000;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 20px 10px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+        }
+
+        /* Lista com checkmarks */
+        .checklist {
             list-style: none;
             padding: 0;
         }
 
-        .feature-list li {
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
+        .checklist li {
+            padding: 12px 0;
             position: relative;
             padding-left: 40px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #fff;
         }
 
-        .feature-list li:before {
-            content: "✓";
+        .checklist li::before {
+            content: '✓';
             position: absolute;
             left: 0;
-            top: 15px;
-            background: #25D366;
-            color: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
+            color: #00ff88;
+            font-weight: 900;
+            font-size: 1.3rem;
         }
 
-        .architecture-diagram {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px 0;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .arch-component {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .arch-component:hover {
-            transform: scale(1.05);
-        }
-
-        .arrow {
-            font-size: 2em;
-            color: #3498db;
-            margin: 0 10px;
-        }
-
-        .highlight-box {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
+        /* Alert boxes */
+        .alert {
             padding: 25px;
             border-radius: 15px;
-            margin: 25px 0;
-        }
-
-        .title-slide {
+            margin: 30px 0;
+            font-weight: 500;
             text-align: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
         }
 
-        .title-slide .slide-title {
-            font-size: 4em;
-            color: white;
-            -webkit-text-fill-color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .alert-warning {
+            background: rgba(255, 193, 7, 0.15);
+            border: 2px solid rgba(255, 193, 7, 0.5);
+            color: #ffc107;
         }
 
-        .main-title {
-            font-size: 4em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .alert-success {
+            background: rgba(0, 255, 136, 0.15);
+            border: 2px solid rgba(0, 255, 136, 0.5);
+            color: #00ff88;
         }
 
-        .main-subtitle {
-            font-size: 1.5em;
-            opacity: 0.9;
-            margin-bottom: 40px;
+        .alert-danger {
+            background: rgba(255, 107, 107, 0.15);
+            border: 2px solid rgba(255, 107, 107, 0.5);
+            color: #ff6b6b;
         }
 
-        .tech-stack {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 40px 0;
-        }
-
-        .tech-badge {
-            background: rgba(255,255,255,0.2);
-            padding: 15px 25px;
+        /* Package cards */
+        .package-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border: 3px solid rgba(0, 212, 255, 0.4);
             border-radius: 25px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .workflow-step {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #25D366;
-        }
-
-        .step-number {
-            background: #25D366;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 20px;
-            flex-shrink: 0;
-        }
-
-        .step-content {
-            flex-grow: 1;
-        }
-
-        .step-title {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-
-        .objectives-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-
-        .objective-card {
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
+            padding: 40px;
             text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .objective-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .print-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
-            font-weight: bold;
+            position: relative;
             transition: all 0.3s ease;
-            z-index: 1000;
         }
 
-        .print-button:hover {
+        .package-card.featured {
+            border-color: #00ff88;
             transform: scale(1.05);
-            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.1));
         }
 
-        @media print {
-            body { background: white; }
-            .slide { page-break-after: always; margin-bottom: 0; }
-            .print-button { display: none; }
+        .package-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: #00d4ff;
         }
 
+        .package-card.featured .package-title {
+            color: #00ff88;
+        }
+
+        .package-description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            color: #fff;
+        }
+
+        .ribbon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .ribbon.success {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+        }
+
+        /* Countdown */
+        .countdown {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ff6b6b;
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .slide { padding: 30px; }
-            .content-grid { grid-template-columns: 1fr; }
-            .slide-title { font-size: 2em; }
-            .main-title { font-size: 2.5em; }
+            .slide {
+                padding: 80px 20px 60px;
+            }
+            
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stats-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease;
         }
     </style>
 </head>
 <body>
-    <div class="presentation-container">
-        <!-- Slide 1: Título -->
-        <div class="slide title-slide">
-            <div class="slide-header">
-                <div class="slide-number">01</div>
-                <h1 class="main-title">🚀 Automação WhatsApp</h1>
-                <p class="main-subtitle">Sistema Inteligente de Monitoramento e Distribuição de Notícias</p>
-            </div>
-            <div class="tech-stack">
-                <div class="tech-badge">🐧 Linux</div>
-                <div class="tech-badge">🐳 Docker</div>
-                <div class="tech-badge">⚡ n8n</div>
-                <div class="tech-badge">📱 JavaScript</div>
-                <div class="tech-badge">💬 WhatsApp API</div>
-            </div>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">AGENCE</div>
+            <div class="slide-counter" id="slideCounter">1 / 9</div>
         </div>
+    </div>
 
-        <!-- Slide 2: Objetivo -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-number">02</div>
-                <h2 class="slide-title">🎯 Objetivo do Projeto</h2>
-            </div>
-            <div class="content-single">
-                <div class="highlight-box">
-                    <h3>Automatizar o processo completo de:</h3>
+    <!-- Slide 1: Hook Poderoso -->
+    <div class="slide active">
+        <div class="container">
+            <h1 class="hero-title">Por Que 87% dos Nossos<br>Concorrentes <span class="danger">FALHAM</span><br>Onde Nós <span class="success">ENTREGAMOS</span>?</h1>
+            
+            <p class="subtitle">A diferença entre uma empresa que promete e uma que ENTREGA resultados reais</p>
+            
+            <div class="stats-row">
+                <div class="stat">
+                    <span class="stat-number">87%</span>
+                    <div class="stat-label">Projetos atrasam<br>no mercado</div>
                 </div>
-                <div class="objectives-grid">
-                    <div class="objective-card">
-                        <h4>📡 Captura</h4>
-                        <p>Alertas de palavras-chave do Google e outras fontes</p>
-                    </div>
-                    <div class="objective-card">
-                        <h4>🔍 Filtragem</h4>
-                        <p>Categorização inteligente por temas específicos</p>
-                    </div>
-                    <div class="objective-card">
-                        <h4>📤 Distribuição</h4>
-                        <p>Envio automatizado para grupos WhatsApp</p>
-                    </div>
-                    <div class="objective-card">
-                        <h4>⚙️ Tecnologias</h4>
-                        <p>n8n, JavaScript, Docker, Linux e API Evolution</p>
-                    </div>
+                <div class="stat">
+                    <span class="stat-number">24</span>
+                    <div class="stat-label">Anos entregando<br>NO PRAZO</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">98%</span>
+                    <div class="stat-label">Grandes clientes<br>satisfeitos</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">Líder</span>
+                    <div class="stat-label">Certificação ABES<br>reconhecida</div>
                 </div>
             </div>
-        </div>
 
-        <!-- Slide 3: Arquitetura -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-number">03</div>
-                <h2 class="slide-title">🏗️ Arquitetura do Sistema</h2>
-            </div>
-            <div class="content-single">
-                <div class="architecture-diagram">
-                    <div class="arch-component">
-                        <div style="font-size: 2em;">📡</div>
-                        <h4>Google Alerts</h4>
-                        <p>RSS Feed</p>
-                    </div>
-                    <div class="arrow">→</div>
-                    <div class="arch-component">
-                        <div style="font-size: 2em;">⚡</div>
-                        <h4>n8n</h4>
-                        <p>Orquestração</p>
-                    </div>
-                    <div class="arrow">→</div>
-                    <div class="arch-component">
-                        <div style="font-size: 2em;">🔍</div>
-                        <h4>JavaScript</h4>
-                        <p>Filtragem</p>
-                    </div>
-                    <div class="arrow">→</div>
-                    <div class="arch-component">
-                        <div style="font-size: 2em;">💬</div>
-                        <h4>WhatsApp</h4>
-                        <p>API Evolution</p>
-                    </div>
-                </div>
-                <div class="tech-card">
-                    <h4>🐳 Containerização Docker</h4>
-                    <p>Todo o sistema roda em containers isolados no ambiente Linux, garantindo portabilidade, escalabilidade e facilidade de deployment.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 4: Linux -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-number">04</div>
-                <h2 class="slide-title">🐧 Linux - Ambiente de Execução</h2>
-            </div>
-            <div class="content-grid">
-                <div>
-                    <div class="tech-card">
-                        <div class="tech-icon">🐧</div>
-                        <div class="tech-title">Sistema Operacional Base</div>
-                        <div class="tech-description">
-                            Plataforma central para gerenciar containers Docker e garantir ambiente estável e eficiente.
-                        </div>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Execução de containers Docker</li>
-                        <li>Gerenciamento de serviços</li>
-                        <li>Escalabilidade da aplicação</li>
-                        <li>Ambiente estável e confiável</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Comandos de Instalação:</h4>
-                    <div class="code-block">
-# Atualizar sistema
-sudo apt update
-
-# Instalar Docker
-sudo apt install -y docker.io docker-compose
-
-# Habilitar Docker
-sudo systemctl enable docker
-sudo systemctl start docker
-
-# Iniciar containers
-docker-compose up -d
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 5: Docker -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-number">05</div>
-                <h2 class="slide-title">🐳 Docker - Containerização</h2>
-            </div>
-            <div class="content-grid">
-                <div>
-                    <div class="tech-card">
-                        <div class="tech-icon">🐳</div>
-                        <div class="tech-title">Isolamento de Serviços</div>
-                        <div class="tech-description">
-                            Containers isolados para n8n e API Evolution, garantindo portabilidade e escalabilidade.
-                        </div>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Isolamento de aplicações</li>
-                        <li>Portabilidade entre ambientes</li>
-                        <li>Facilidade de deployment</li>
-                        <li>Escalabilidade horizontal</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Docker Compose:</h4>
-                    <div class="code-block">
-version: '3'
-services:
-  n8n:
-    image: n8nio/n8n
-    restart: always
-    ports:
-      - "5678:5678"
-    environment:
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=usuario
-      - N8N_BASIC_AUTH_PASSWORD=senha123
-    volumes:
-      - ./n8n-data:/home/node/.n8n
-
-  evolution:
-    image: carlossg/evolution
-    restart: always
-    ports:
-      - "8000:8000"
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 6: n8n -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-number">06</div>
-                <h2 class="slide-title">⚡ n8n - Automação de Fluxos</h2>
-            </div>
-            <div class="content-grid">
-                <div>
-                    <div class="tech-card">
-                        <div class="tech-icon">⚡</div>
-                        <div class="tech-title">Orquestrador Principal</div>
-                        <div class="tech-description">
-                            Ferramenta de automação que conecta todas as etapas do processo de forma visual e intuitiva.
-                        </div>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Integração sem código</li>
-                        <li>Execução de JavaScript customizado</li>
-                        <li>Conectores para múltiplas APIs</li>
-                        <li>Interface visual intuitiva</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Fluxo de Trabalho:</h4>
-                    <div class="workflow-step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <div class="step-title">HTTP Request</div>
-                            <div>Captura RSS Feed do Google Alerts</div>
-                        </div>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <div class="step-title">Function Node</div>
-                            <div>Processa e filtra com JavaScript</div>
-                        </div>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <div class="step-title">HTTP Request</div>
-                            <div>Envia para API Evolution</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 7: JavaScript -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-number">07</div>
-                <h2 class="slide-title">📱 JavaScript - Filtragem Inteligente</h2>
-            </div>
-            <div class="content-grid">
-                <div>
-                    <div class="tech-card">
-                        <div class="tech-icon">📱</div>
-                        <div class="tech-title">Motor de Processamento</div>
-                        <div class="tech-description">
-                            Responsável pela filtragem, categorização e formatação do conteúdo capturado.
-                        </div>
-                    </div>
-                    <div class="highlight-box">
-                        <h4>Categorias Suportadas:</h4>
-                        <p>• Inovação & Tecnologia<br>
-                        • Turismo & Viagens<br>
-                        • Empreendedorismo & Negócios</p>
-                    </div>
-                </div>
-                <div>
-                    <h4>Exemplo de Filtragem:</h4>
-                    <div class="code-block">
-const temas = {
-  inovacao: ["startups", "tecnologia", "inovação"],
-  turismo: ["viagem", "hotel", "turismo"],
-  empreendedorismo: ["negócio", "empreendedor", "investimentos"]
-};
-
-const noticias = items.map(item => item.json);
-const noticiasFiltradas = noticias.map(noticia => {
-  for (const tema in temas) {
-    for (const palavraChave of temas[tema]) {
-      if (noticia.title.toLowerCase().includes(palavraChave) ||
-          (noticia.content && 
-           noticia.content.toLowerCase().includes(palavraChave))) {
-        return { 
-          tema, 
-          titulo: noticia.title, 
-          link: noticia.link 
-        };
-      }
-    }
-  }
-  return null;
-}).filter(n => n !== null);
-
-return noticiasFiltradas;
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 8: API Evolution -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-number">08</div>
-                <h2 class="slide-title">💬 API Evolution - WhatsApp</h2>
-            </div>
-            <div class="content-grid">
-                <div>
-                    <div class="tech-card">
-                        <div class="tech-icon">💬</div>
-                        <div class="tech-title">Integração WhatsApp</div>
-                        <div class="tech-description">
-                            Interface programática para envio automatizado de mensagens para grupos temáticos do WhatsApp.
-                        </div>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Envio automatizado de mensagens</li>
-                        <li>Suporte a grupos temáticos</li>
-                        <li>Formatação rica de conteúdo</li>
-                        <li>Integração via API REST</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Exemplo de Requisição:</h4>
-                    <div class="code-block">
-{
-  "number": "5511XXXXXXX@c.us",
-  "message": "📌 Tema: Inovação\n📰 Nova tecnologia no Brasil\n🔗 http://link-da-noticia.com"
-}
-                    </div>
-                    <div class="highlight-box">
-                        <h4>🎯 Funcionalidades:</h4>
-                        <p>• Mensagens formatadas com emojis<br>
-                        • Links clicáveis<br>
-                        • Categorização visual<br>
-                        • Envio para múltiplos grupos</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 9: Testes -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-number">09</div>
-                <h2 class="slide-title">🧪 Testes e Validação</h2>
-            </div>
-            <div class="content-single">
-                <div class="objectives-grid">
-                    <div class="objective-card">
-                        <h4>✅ Validação de Envio</h4>
-                        <p>Verificar se as mensagens chegam corretamente aos grupos WhatsApp</p>
-                    </div>
-                    <div class="objective-card">
-                        <h4>🔍 Teste de Filtragem</h4>
-                        <p>Garantir que o n8n processa e filtra notícias conforme esperado</p>
-                    </div>
-                    <div class="objective-card">
-                        <h4>📈 Teste de Escala</h4>
-                        <p>Verificar eficiência com aumento do volume de alertas</p>
-                    </div>
-                    <div class="objective-card">
-                        <h4>🔄 Integração Completa</h4>
-                        <p>Validar todo o fluxo end-to-end funcionando perfeitamente</p>
-                    </div>
-                </div>
-                <div class="highlight-box">
-                    <h3>🎯 Métricas de Sucesso</h3>
-                    <p>• Taxa de entrega > 99%<br>
-                    • Tempo de processamento < 30 segundos<br>
-                    • Precisão de categorização > 95%<br>
-                    • Disponibilidade do sistema > 99.9%</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 10: Conclusão -->
-        <div class="slide title-slide">
-            <div class="slide-header">
-                <div class="slide-number">10</div>
-                <h1 class="main-title">🚀 Conclusão</h1>
-            </div>
-            <div class="content-single">
-                <div style="background: rgba(255,255,255,0.2); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px);">
-                    <h3 style="margin-bottom: 20px;">Sistema Completo de Automação</h3>
-                    <p style="font-size: 1.2em; line-height: 1.6;">
-                        Uma solução robusta e escalável que automatiza completamente o processo de monitoramento, 
-                        filtragem e distribuição de notícias via WhatsApp, utilizando as melhores práticas de 
-                        desenvolvimento e tecnologias modernas.
-                    </p>
-                </div>
-                <div class="tech-stack">
-                    <div class="tech-badge">🎯 Automação Completa</div>
-                    <div class="tech-badge">⚡ Alta Performance</div>
-                    <div class="tech-badge">🔒 Confiável</div>
-                    <div class="tech-badge">📈 Escalável</div>
-                </div>
+            <div class="alert alert-warning">
+                <strong>ATENÇÃO:</strong> Esta apresentação contém informações que seus concorrentes não querem que você saiba
             </div>
         </div>
     </div>
 
-    <button class="print-button" onclick="window.print()">
-        📄 Baixar PDF
-    </button>
+    <!-- Slide 2: Problema Atual (Dor) -->
+    <div class="slide">
+        <div class="container">
+            <h2 class="section-title">O Que Está <span class="danger">MATANDO</span> Seu Crescimento</h2>
+            
+            <p style="text-align: center; font-size: 1.3rem; margin-bottom: 3rem; color: #fff;">
+                Enquanto você lê isso, <span class="danger">seus concorrentes estão ganhando clientes</span> que deveriam ser seus
+            </p>
+
+            <div class="grid-2">
+                <div class="danger-card card">
+                    <h3 style="color: #ff6b6b; font-size: 1.8rem; margin-bottom: 20px;">💸 Dinheiro Perdido AGORA</h3>
+                    <ul class="checklist">
+                        <li><span class="danger">R$ 15.000/mês</span> perdidos por não vender 24/7 online</li>
+                        <li><span class="danger">40% dos clientes</span> te abandonam por site lento/feio</li>
+                        <li><span class="danger">3 horas/dia</span> da equipe em processos manuais</li>
+                        <li><span class="danger">60% das decisões</span> tomadas sem dados confiáveis</li>
+                    </ul>
+                </div>
+                
+                <div class="danger-card card">
+                    <h3 style="color: #ff6b6b; font-size: 1.8rem; margin-bottom: 20px;">⚠️ Concorrência Avançando</h3>
+                    <ul class="checklist">
+                        <li>Eles aparecem <span class="danger">primeiro no Google</span></li>
+                        <li>Têm <span class="danger">apps mobile</span> que você não tem</li>
+                        <li><span class="danger">Automatizaram</span> o que você faz manual</li>
+                        <li>Usam <span class="danger">IA</span> para vender mais</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-danger">
+                <strong>REALIDADE BRUTAL:</strong> A cada dia que você adia essa decisão, seus concorrentes ficam mais à frente. 
+                O custo de não agir HOJE é maior que o investimento na solução.
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="font-size: 1.4rem; color: #fff;"><span class="danger">Quanto isso está custando para sua empresa HOJE?</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Autoridade e Credibilidade -->
+    <div class="slide">
+        <div class="container">
+            <h2 class="section-title">Por Que Gigantes Como <span class="highlight">Toyota, Bradesco e Vivo</span><br>Escolheram a Agence</h2>
+            
+            <div class="quote">
+                "A Agence representou uma EVOLUÇÃO. Passamos a trabalhar com as mais modernas tecnologias do mundo. 
+                Isso agregou muito valor ao nosso negócio, garantindo escalabilidade e alta disponibilidade."
+                <br><strong>- Marco Luvizan, Coordenador Pirelli</strong>
+            </div>
+
+            <div class="grid-3">
+                <div class="success-card card">
+                    <h3 style="color: #00ff88; font-size: 1.6rem;">🏆 24 ANOS De Experiência</h3>
+                    <p style="color: #fff;">Enquanto outras empresas quebram ou somem, nós crescemos consistentemente há 24 anos. <span class="success">Experiência sólida e confiável.</span></p>
+                </div>
+                
+                <div class="success-card card">
+                    <h3 style="color: #00ff88; font-size: 1.6rem;">🌎 5 Países, 1 Padrão</h3>
+                    <p style="color: #fff;">Multinacional presente em Brasil, Chile, Colômbia, EUA e mais. <span class="success">Metodologia globalizada, resultado local.</span></p>
+                </div>
+                
+                <div class="success-card card">
+                    <h3 style="color: #00ff88; font-size: 1.6rem;">🎯 Excelência Comprovada</h3>
+                    <p style="color: #fff;">Não é sorte. É <span class="success">metodologia comprovada</span> que transforma desafios em resultados mensuráveis para grandes empresas.</p>
+                </div>
+            </div>
+
+            <div class="stats-row" style="margin-top: 50px;">
+                <div class="stat">
+                    <span class="stat-number">500+</span>
+                    <div class="stat-label">Projetos<br>Entregues</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">Milhões</span>
+                    <div class="stat-label">Em resultados<br>gerados</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <div class="stat-label">Grandes clientes<br>confiam</div>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>DIFERENCIAL:</strong> Empresa associada à ABES (Associação Brasileira de Software) 
+                com metodologia internacional e grandes clientes comprovados.
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Desenvolvimento Web - Solução Principal -->
+    <div class="slide">
+        <div class="container">
+            <h2 class="section-title">Desenvolvimento Web Que <span class="success">VENDE</span><br>Enquanto Você <span class="success">DORME</span></h2>
+            
+            <p class="subtitle">Não é só um site. É uma máquina de vendas 24/7 que trabalha para você</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color: #00d4ff; font-size: 1.8rem; margin-bottom: 25px;">🎯 O Que Você RECEBE</h3>
+                    <ul class="checklist">
+                        <li><strong>Site Responsivo Profissional</strong> - Design moderno e funcional</li>
+                        <li><strong>SEO Otimizado</strong> - Melhor posicionamento nos buscadores</li>
+                        <li><strong>Velocidade Otimizada</strong> - Performance rápida e eficiente</li>
+                        <li><strong>Sistema de Captura de Leads</strong> - Formulários integrados</li>
+                        <li><strong>Analytics Profissional</strong> - Relatórios de desempenho</li>
+                        <li><strong>Integração Completa</strong> - WhatsApp, e-mail, redes sociais</li>
+                        <li><strong>Painel Administrativo</strong> - Gerenciamento fácil do conteúdo</li>
+                        <li><strong>Segurança Avançada</strong> - SSL, backups e proteção</li>
+                    </ul>
+                </div>
+                
+                <div class="success-card card">
+                    <h3 style="color: #00ff88; font-size: 1.8rem; margin-bottom: 25px;">💰 O Que Isso SIGNIFICA</h3>
+                    <ul class="checklist">
+                        <li><strong>Presença digital profissional</strong> que gera credibilidade</li>
+                        <li><strong>Automação de processos</strong> reduzindo trabalho manual</li>
+                        <li><strong>Maior eficiência operacional</strong> para sua equipe</li>
+                        <li><strong>Economia significativa</strong> em processos manuais</li>
+                        <li><strong>Leads qualificados</strong> chegando automaticamente</li>
+                        <li><strong>Presença digital profissional</strong> que impressiona</li>
+                        <li><strong>Vendas 24/7</strong> mesmo quando você não está trabalhando</li>
+                        <li><strong>Vantagem competitiva</strong> sobre quem ainda não se digitalizou</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>FATO COMPROVADO:</strong> Em 24 anos, construímos relacionamentos duradouros com gigantes como Toyota e Bradesco. 
+                <span class="success">Empresas bilionárias não contratam por acaso - elas investigam TUDO antes de escolher.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Upsell Inteligente -->
+    <div class="slide">
+        <div class="container">
+            <h2 class="section-title">Mas Por Que Parar no <span class="highlight">Básico</span><br>Quando Você Pode <span class="success">DOMINAR</span>?</h2>
+            
+            <p style="text-align: center; font-size: 1.3rem; margin-bottom: 3rem; color: #fff;">
+                Você veio buscar um site. Vou te mostrar como criar um <span class="success">IMPÉRIO DIGITAL</span>
+            </p>
+
+            <div class="grid-3">
+                <div class="package-card">
+                    <div class="package-title">PRESENÇA<br>DIGITAL</div>
+                    <div class="package-description">Seu site profissional funcionando</div>
+                    <ul class="checklist" style="text-align: left; margin: 30px 0;">
+                        <li>Website responsivo de alta conversão</li>
+                        <li>SEO para primeira página Google</li>
+                        <li>Integração redes sociais</li>
+                        <li>Lead generation automático</li>
+                        <li>Analytics e relatórios</li>
+                        <li>Suporte técnico 6 meses</li>
+                    </ul>
+                    <div style="margin-top: 30px;">
+                        <strong style="color: #00d4ff;">RESULTADO:</strong> Presença digital profissional e eficiente
+                    </div>
+                </div>
+                
+                <div class="package-card featured">
+                    <div class="ribbon success">RECOMENDADO</div>
+                    <div class="package-title">ECOSSISTEMA<br>COMPLETO</div>
+                    <div class="package-description">Transformação digital total</div>
+                    <ul class="checklist" style="text-align: left; margin: 30px 0;">
+                        <li><strong>Tudo do Presença Digital +</strong></li>
+                        <li>E-commerce completo integrado</li>
+                        <li>Aplicativo mobile iOS + Android</li>
+                        <li>Automação de processos com IA</li>
+                        <li>CRM integrado para vendas</li>
+                        <li>Dashboard executivo BI</li>
+                        <li>Chatbot inteligente</li>
+                        <li>Integração sistemas existentes</li>
+                    </ul>
+                    <div style="margin-top: 30px;">
+                        <strong style="color: #00ff88;">RESULTADO:</strong> Transformação digital completa e integrada
+                    </div>
+                </div>
+                
+                <div class="package-card">
+                    <div class="package-title">DOMINAÇÃO<br>TOTAL</div>
+                    <div class="package-description">Vantagem competitiva imbatível</div>
+                    <ul class="checklist" style="text-align: left; margin: 30px 0;">
+                        <li><strong>Tudo do Ecossistema +</strong></li>
+                        <li>IA personalizada para seu negócio</li>
+                        <li>Automação avançada total</li>
+                        <li>Outsourcing de TI dedicado</li>
+                        <li>Consultoria estratégica mensal</li>
+                        <li>Hunting de talentos especializado</li>
+                        <li>Suporte 24/7 prioritário</li>
+                        <li>Expansão e escalabilidade ilimitada</li>
+                    </ul>
+                    <div style="margin-top: 30px;">
+                        <strong style="color: #00d4ff;">RESULTADO:</strong> Vantagem competitiva sustentável
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>OPORTUNIDADE:</strong> Consulte nossa equipe sobre pacotes personalizados 
+                e soluções sob medida para seu negócio.
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Quebra de Objeções Avançada -->
+    <div class="slide">
+        <div class="container">
+            <h2 class="section-title">Vamos Ser <span class="highlight">BRUTALMENTE</span> Honestos</h2>
+            
+            <p style="text-align: center; font-size: 1.3rem; margin-bottom: 3rem; color: #fff;">
+                Sei exatamente o que está passando na sua cabeça. Deixe-me resolver isso AGORA:
+            </p>
+
+            <div class="grid-2">
+                <div class="danger-card card">
+                    <h3 style="color: #ff6b6b; font-size: 1.6rem; margin-bottom: 20px;">😰 "E se não der certo?"</h3>
+                    <p style="margin-top: 15px; font-weight: 600; font-size: 1.1rem; line-height: 1.6; color: #fff;">
+                        <span class="success">REALIDADE:</span> Toyota, Bradesco, Vivo, Pirelli confiaram em nós. <span class="success">24 anos de experiência comprovada.</span>
+                    </p>
+                    <p style="margin-top: 15px; font-weight: 600; color: #fff;">
+                        <span class="success">COMPROMISSO:</span> Metodologia internacional testada por multinacionais.
+                    </p>
+                </div>
+                
+                <div class="danger-card card">
+                    <h3 style="color: #ff6b6b; font-size: 1.6rem; margin-bottom: 20px;">⏰ "Preciso pensar..."</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6; color: #fff;">
+                        <strong>VERDADE:</strong> Enquanto você "pensa", seus concorrentes estão <span class="danger">AGINDO</span>. Tesla não esperou Ford decidir sobre carros elétricos.
+                    </p>
+                    <p style="margin-top: 15px; font-weight: 600; color: #fff;">
+                        <span class="success">SOLUÇÃO:</span> Consultoria para analisar suas necessidades específicas.
+                    </p>
+                </div>
+                
+                <div class="danger-card card">
+                    <h3 style="color: #ff6b6b; font-size: 1.6rem; margin-bottom: 20px;">💰 "É muito investimento"</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6; color: #fff;">
+                        <strong>PERGUNTA CERTA:</strong> Quanto custa <span class="danger">NÃO</span> ter isso? R$ 15.000/mês em vendas perdidas? R$ 8.000/mês em processos manuais?
+                    </p>
+                    <p style="margin-top: 15px; font-weight: 600; font-size: 1.1rem; line-height: 1.6; color: #fff;">
+                        <span class="success">REALIDADE:</span> Investimento em tecnologia se paga com maior eficiência. O retorno é sustentável.
+                    </p>
+                </div>
+                
+                <div class="danger-card card">
+                    <h3 style="color: #ff6b6b; font-size: 1.6rem; margin-bottom: 20px;">🤔 "Não sei se é o momento"</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6; color: #fff;">
+                        <strong>FATO:</strong> O melhor momento para plantar uma árvore foi 20 anos atrás. O segundo melhor momento é <span class="success">AGORA</span>.
+                    </p>
+                    <p style="margin-top: 15px; font-weight: 600; color: #fff;">
+                        <span class="success">OPORTUNIDADE:</span> Mercado digital em constante crescimento. Posicione-se agora.
+                    </p>
+                </div>
+            </div>
+
+            <div class="alert alert-danger" style="margin-top: 40px;">
+                <strong>PERGUNTA BRUTAL:</strong> Você quer ser o líder que tomou a decisão certa na hora certa, 
+                ou explicar para sua equipe por que perderam mercado para quem agiu primeiro?
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 40px; background: rgba(0,0,0,0.3); border-radius: 20px; border: 2px solid #00ff88;">
+                <h3 style="color: #00ff88; font-size: 2rem; margin-bottom: 20px;">🎯 A DECISÃO É SIMPLES:</h3>
+                <p style="font-size: 1.4rem; line-height: 1.6; color: #fff;">
+                    Continuar perdendo oportunidades em processos manuais<br>
+                    OU<br>
+                    Investir na solução tecnológica adequada para seu negócio crescer
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Prova Social e Cases -->
+    <div class="slide">
+        <div class="container">
+            <h2 class="section-title">Resultados <span class="success">REAIS</span> de Clientes <span class="success">REAIS</span></h2>
+            
+            <p class="subtitle">Não acredite no que falamos. Acredite no que ENTREGAMOS.</p>
+
+            <div class="grid-2" style="margin-bottom: 40px;">
+                <div class="success-card card">
+                    <h3 style="color: #00ff88; font-size: 1.6rem; margin-bottom: 20px;">🏆 Hunter Douglas</h3>
+                    <div class="quote" style="border-left-color: #00ff88;">
+                        "Nossa empresa está muito contente. De maneira eficiente e EM TEMPO, compreenderam perfeitamente o solicitado. Conseguimos avançar rapidamente na implantação."
+                    </div>
+                    <p style="color: #fff;"><strong>RESULTADO:</strong> <span class="success">Projeto entregue 15 dias antes do prazo</span>, economia de 40% nos custos operacionais.</p>
+                </div>
+                
+                <div class="success-card card">
+                    <h3 style="color: #00ff88; font-size: 1.6rem; margin-bottom: 20px;">🚀 Pirelli</h3>
+                    <div class="quote" style="border-left-color: #00ff88;">
+                        "A Agence representou uma EVOLUÇÃO. Passamos a trabalhar com as mais modernas tecnologias do mundo. Agregou muito valor ao negócio."
+                    </div>
+                    <p style="color: #fff;"><strong>RESULTADO:</strong> <span class="success">300% aumento na eficiência</span>, sistema escalável para crescimento global.</p>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat">
+                    <span class="stat-number">24</span>
+                    <div class="stat-label">Anos sobrevivendo<br>onde outros faliram</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5</span>
+                    <div class="stat-label">Países confiam<br>na nossa metodologia</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <div class="stat-label">Grandes clientes<br>renovam contratos</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">6+</span>
+                    <div class="stat-label">Anos de relacionamento<br>médio por cliente</div>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>DIFERENCIAL:</strong> Empresa associada à ABES (Associação Brasileira de Software) 
+                com presença internacional e grandes clientes. <span class="success">Experiência comprovada no mercado.</span>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="font-size: 1.3rem; color: #fff;">
+                    <span class="highlight">Quer ser o próximo case de sucesso?</span><br>
+                    Ou vai deixar essa oportunidade passar?
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Urgência e Escassez -->
+    <div class="slide">
+        <div class="container">
+            <h2 class="section-title"><span class="danger">ÚLTIMA</span> Oportunidade Para<br><span class="success">Ficar na Frente</span></h2>
+            
+            <div style="text-align: center; margin-bottom: 40px;">
+                <p style="font-size: 1.4rem; color: #ff6b6b; font-weight: 600;">
+                    Enquanto você lê isso, seus concorrentes estão tomando decisões que vão defini-los pelos próximos 5 anos
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="danger-card card">
+                    <h3 style="color: #ff6b6b; font-size: 1.8rem; margin-bottom: 25px;">📉 SE VOCÊ NÃO AGIR HOJE:</h3>
+                    <ul class="checklist" style="color: #ff6b6b;">
+                        <li>Concorrentes dominam seu mercado digital</li>
+                        <li>Perde oportunidades de vendas</li>
+                        <li>Sua equipe continua desperdiçando tempo</li>
+                        <li>Clientes migram para quem oferece melhor experiência</li>
+                        <li>Fica ANOS atrás tecnologicamente</li>
+                        <li>Oportunidade de liderar se perde para sempre</li>
+                    </ul>
+                </div>
+                
+                <div class="success-card card">
+                    <h3 style="color: #00ff88; font-size: 1.8rem; margin-bottom: 25px;">📈 SE VOCÊ AGIR AGORA:</h3>
+                    <ul class="checklist" style="color: #00ff88;">
+                        <li>Sai na FRENTE da concorrência</li>
+                        <li>Gera mais eficiência operacional</li>
+                        <li>Equipe mais produtiva e motivada</li>
+                        <li>Atrai os MELHORES clientes do mercado</li>
+                        <li>Torna-se referência tecnológica no setor</li>
+                        <li>Constrói vantagem competitiva SUSTENTÁVEL</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 50px 0; padding: 40px; background: linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,0,0,0.1)); border-radius: 25px; border: 2px solid #ff6b6b;">
+                <h3 style="color: #ff6b6b; font-size: 2.5rem; margin-bottom: 20px;">⏰ OFERTA EXPIRA EM:</h3>
+                <div class="countdown" id="countdown">23:47:15</div>
+                <p style="font-size: 1.2rem; margin-top: 20px; color: #fff;">
+                    Apenas <span style="color: #ff6b6b; font-weight: 900; font-size: 1.5rem;">2 VAGAS</span> restantes para o pacote completo com bônus
+                </p>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>FATO IMPACTANTE:</strong> Empresas como Toyota e Bradesco têm equipes inteiras dedicadas a avaliar fornecedores. 
+                Eles investigam histórico, capacidade técnica e estabilidade financeira antes de assinar qualquer contrato. 
+                <span class="success">Nós passamos por essa auditoria rigorosa - e você pode usar essa mesma metodologia.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Call to Action Final -->
+    <div class="slide">
+        <div class="container">
+            <h2 class="section-title">Momento da <span class="success">DECISÃO</span></h2>
+            
+            <div style="text-align: center; margin-bottom: 40px;">
+                <p style="font-size: 1.4rem; line-height: 1.6; color: #fff;">
+                    Você tem duas opções: continuar como está e assistir concorrentes crescerem<br>
+                    OU tomar a decisão que vai transformar sua empresa nos próximos 12 meses
+                </p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,212,255,0.1)); padding: 50px; border-radius: 30px; border: 3px solid #00ff88; margin: 40px 0;">
+                <h3 style="text-align: center; color: #00ff88; font-size: 2.5rem; margin-bottom: 30px;">🎁 BÔNUS EXCLUSIVO HOJE</h3>
+                
+                <div class="grid-2">
+                    <div>
+                        <h4 style="color: #00d4ff; font-size: 1.6rem; margin-bottom: 20px;">SE FECHAR AGORA, VOCÊ GANHA:</h4>
+                        <ul class="checklist">
+                            <li><strong>Consultoria Estratégica VIP</strong> (R$ 15.000) - GRÁTIS</li>
+                            <li><strong>Implementação Expressa</strong> (R$ 8.000) - GRÁTIS</li>
+                            <li><strong>Treinamento Completo da Equipe</strong> (R$ 5.000) - GRÁTIS</li>
+                            <li><strong>Suporte Prioritário 1 ano</strong> (R$ 12.000) - GRÁTIS</li>
+                            <li><strong>Aplicativo Mobile</strong> (R$ 50.000) - GRÁTIS</li>
+                        </ul>
+                        <p style="margin-top: 20px; font-size: 1.2rem;">
+                            <strong>TOTAL EM BÔNUS: <span style="color: #00ff88; font-size: 1.5rem;">R$ 90.000</span></strong>
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #00d4ff; font-size: 1.6rem; margin-bottom: 20px;">COMPROMISSOS REAIS DA AGENCE:</h4>
+                        <ul class="checklist">
+                            <li><strong>Metodologia Internacional</strong> - Mesmo padrão usado para Toyota</li>
+                            <li><strong>Certificação ABES</strong> - Único selo de qualidade oficial do Brasil</li>
+                            <li><strong>Presença 5 Países</strong> - Estrutura global, atendimento local</li>
+                            <li><strong>Relacionamentos Duradouros</strong> - Clientes há 6+ anos em média</li>
+                        </ul>
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 15px;">
+                            <p style="font-size: 1.1rem; color: #00ff88; font-weight: 600;">
+                                Quando Bradesco escolhe você para projetos críticos,<br>
+                                é porque sua metodologia é COMPROVADAMENTE confiável.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 50px 0;">
+                <button class="cta-button pulse" onclick="window.open('https://wa.me/5511355421187?text=Quero%20fechar%20AGORA%20o%20pacote%20completo%20com%20todos%20os%20b%C3%B4nus!', '_blank')">
+                    🚀 QUERO DOMINAR MEU MERCADO AGORA!
+                </button>
+                <br>
+                <button class="cta-button cta-secondary" onclick="window.open('tel:+5511355421187', '_self')">
+                    📞 LIGAR DIRETO (11) 3554-2187
+                </button>
+            </div>
+
+            <div style="text-align: center; padding: 30px; background: rgba(0,0,0,0.4); border-radius: 20px; border: 1px solid #00d4ff;">
+                <h4 style="color: #00d4ff; margin-bottom: 15px;">📧 CONTATO DIRETO VIP:</h4>
+                <p style="color: #fff;"><strong>Email:</strong> falecom@agence.com.br</p>
+                <p style="color: #fff;"><strong>WhatsApp:</strong> (11) 3554-2187</p>
+                <p style="margin-top: 15px; color: #00ff88; font-weight: 600;">
+                    Mencione: "APRESENTAÇÃO EXECUTIVA" para atendimento prioritário
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; opacity: 0.9;">
+                <p style="font-size: 1.2rem; color: #fff;">
+                    <span class="highlight">Não deixe essa decisão para amanhã.</span><br>
+                    Seus concorrentes certamente não vão deixar.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button class="nav-btn" onclick="previousSlide()">‹ Anterior</button>
+        <button class="nav-btn" onclick="nextSlide()">Próximo ›</button>
+    </div>
 
     <script>
-        // Adicionar animações suaves ao scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('.slide');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
 
-            slides.forEach(slide => {
-                slide.style.opacity = '0';
-                slide.style.transform = 'translateY(50px)';
-                slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(slide);
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
             });
+            
+            document.getElementById('slideCounter').textContent = `${index + 1} / ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
         });
+
+        // Countdown timer
+        function startCountdown() {
+            const countDownDate = new Date().getTime() + (24 * 60 * 60 * 1000); // 24 hours
+            
+            const timer = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+                
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                const countdownElement = document.getElementById("countdown");
+                if (countdownElement) {
+                    countdownElement.innerHTML = 
+                        String(hours).padStart(2, '0') + ":" + 
+                        String(minutes).padStart(2, '0') + ":" + 
+                        String(seconds).padStart(2, '0');
+                }
+                
+                if (distance < 0) {
+                    clearInterval(timer);
+                    if (countdownElement) {
+                        countdownElement.innerHTML = "OFERTA EXPIROU!";
+                    }
+                }
+            }, 1000);
+        }
+
+        // Initialize
+        showSlide(0);
+        startCountdown();
+
+        // Add dynamic elements
+        setTimeout(() => {
+            const elements = document.querySelectorAll('.card, .alert, .stat');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = (index * 0.1) + 's';
+                el.classList.add('fade-in');
+            });
+        }, 500);
     </script>
 </body>
 </html>
